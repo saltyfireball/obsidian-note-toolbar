@@ -1,11 +1,16 @@
 import { Modal, Notice, Plugin } from "obsidian";
 import type { App } from "obsidian";
 
+interface EditorLike {
+	getSelection(): string;
+	replaceSelection(text: string): void;
+}
+
 export class HelpersModal extends Modal {
-	private editor: any;
+	private editor: EditorLike;
 	private plugin: Plugin | null;
 
-	constructor(app: App, editor: any, plugin?: Plugin) {
+	constructor(app: App, editor: EditorLike, plugin?: Plugin) {
 		super(app);
 		this.editor = editor;
 		this.plugin = plugin || null;
@@ -18,7 +23,7 @@ export class HelpersModal extends Modal {
 
 		contentEl.createEl("h2", { text: "Helpers" });
 
-		const selection = (this.editor?.getSelection?.() || "").trim();
+		const selection = (this.editor.getSelection() || "").trim();
 		const actions = contentEl.createDiv("sf-helper-actions");
 
 		if (selection) {
@@ -53,7 +58,7 @@ export class HelpersModal extends Modal {
 
 			// Figlet Font option - available when text is selected
 			if (window.figletAPI) {
-				actions.createEl("button", { text: "Figlet Font (ASCII Art)" }).addEventListener(
+				actions.createEl("button", { text: "Figlet font (ASCII art)" }).addEventListener(
 					"click",
 					() => {
 						this.close();
@@ -76,7 +81,7 @@ export class HelpersModal extends Modal {
 
 		// Figlet Font option - also available without selection
 		if (window.figletAPI) {
-			actions.createEl("button", { text: "Figlet Font (ASCII Art)" }).addEventListener(
+			actions.createEl("button", { text: "Figlet font (ASCII art)" }).addEventListener(
 				"click",
 				() => {
 					this.close();

@@ -1,5 +1,5 @@
 interface FigletAPI {
-	openModal(app: any, plugin: any, editor: any): void;
+	openModal(app: unknown, plugin: unknown, editor: unknown): void;
 }
 
 interface Window {

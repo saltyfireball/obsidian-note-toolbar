@@ -7,7 +7,7 @@ import {
 } from "./toolbar";
 
 export default class NoteToolbarPlugin extends Plugin implements ToolbarPlugin {
-	toolbarActionButtons = new WeakMap<MarkdownView, Record<string, any>>();
+	toolbarActionButtons = new WeakMap<MarkdownView, Record<string, unknown>>();
 	sourceModeState = false;
 
 	async onload() {

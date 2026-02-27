@@ -20,7 +20,6 @@ interface ToolbarActions {
 }
 
 export interface ToolbarPlugin extends Plugin {
-	app: any;
 	toolbarActionButtons: WeakMap<MarkdownView, ToolbarActions>;
 	sourceModeState: boolean;
 }
@@ -52,7 +51,7 @@ export function ensureToolbarActions(plugin: ToolbarPlugin): void {
 	if (!view) return;
 	if (plugin.toolbarActionButtons.has(view)) return;
 
-	const todayAction = view.addAction("calendar", "Open Today's Note", async () => {
+	const todayAction = view.addAction("calendar", "Open today's note", async () => {
 		try {
 			const dailyNotesModule = await import("obsidian-daily-notes-interface");
 			const dailyNotes = dailyNotesModule.getAllDailyNotes();
@@ -61,13 +60,14 @@ export function ensureToolbarActions(plugin: ToolbarPlugin): void {
 				dailyNotes,
 			) as TFile | null;
 			if (!todaysNote) {
-				new Notice("Today's Daily Note was not found.");
+				new Notice("Today's daily note was not found.");
 				return;
 			}
 
 			const workspace = plugin.app.workspace;
-			const activeLeaf = workspace.activeLeaf ?? null;
-			if (isLeafShowingFile(activeLeaf, todaysNote)) {
+			const activeView = workspace.getActiveViewOfType(MarkdownView);
+			const activeViewLeaf = activeView?.leaf ?? null;
+			if (isLeafShowingFile(activeViewLeaf, todaysNote)) {
 				return;
 			}
 
@@ -75,7 +75,7 @@ export function ensureToolbarActions(plugin: ToolbarPlugin): void {
 				.getLeavesOfType("markdown")
 				.find(
 					(leaf: WorkspaceLeaf) =>
-						leaf !== activeLeaf && isLeafShowingFile(leaf, todaysNote),
+						leaf !== activeViewLeaf && isLeafShowingFile(leaf, todaysNote),
 				);
 
 			if (otherLeaf) {
@@ -83,11 +83,11 @@ export function ensureToolbarActions(plugin: ToolbarPlugin): void {
 				return;
 			}
 
-			const leafToOpen = activeLeaf ?? workspace.getLeaf(false);
+			const leafToOpen = activeViewLeaf ?? workspace.getLeaf(false);
 			await leafToOpen.openFile(todaysNote);
 		} catch (err) {
-			console.error("Failed to open today's Daily Note", err);
-			new Notice("Unable to open today's Daily Note.");
+			console.error("Failed to open today's daily note", err);
+			new Notice("Unable to open today's daily note.");
 		}
 	}) as ToolbarAction;
 
@@ -99,7 +99,7 @@ export function ensureToolbarActions(plugin: ToolbarPlugin): void {
 		plugin,
 		view,
 		"code-2",
-		"Switch to Source",
+		"Switch to source",
 	);
 
 	setActionAttr(todayAction, TOOLBAR_ATTR, "today");
@@ -133,7 +133,7 @@ export function updateSourceToggleAction(
 	if (!actions) return;
 
 	const isSource = getSourceModeState(view);
-	const title = isSource ? "Switch to Live Preview" : "Switch to Source";
+	const title = isSource ? "Switch to live preview" : "Switch to source";
 	const icon = isSource ? "eye" : "code-2";
 	const toggleAction = actions.sourceToggle;
 	const iconChanged = !toggleAction || toggleAction.__sfIcon !== icon;
@@ -167,7 +167,7 @@ function reorderToolbarActions(plugin: ToolbarPlugin, view: MarkdownView): void 
 	const toolbarParent = todayEl?.parentNode || helpersEl?.parentNode || toggleEl?.parentNode;
 	if (!todayEl || !helpersEl || !toggleEl || !toolbarParent) return;
 
-	const children = Array.from(toolbarParent.children) as Element[];
+	const children = Array.from(toolbarParent.children);
 	const firstNonPlugin = children.find(
 		(child) =>
 			child.classList?.contains("view-action") &&
