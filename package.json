@@ -1,0 +1,28 @@
+{
+	"name": "obsidian-note-toolbar",
+	"version": "1.0.0",
+	"description": "Toolbar actions for Obsidian: Today's Note, Helpers modal, Source/Live Preview toggle.",
+	"main": "main.js",
+	"type": "module",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"version": "node version-bump.mjs && git add manifest.json versions.json"
+	},
+	"keywords": [
+		"obsidian",
+		"plugin",
+		"toolbar"
+	],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^16.11.6",
+		"esbuild": "0.25.5",
+		"tslib": "2.4.0",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"obsidian": "latest",
+		"obsidian-daily-notes-interface": "^0.9.4"
+	}
+}

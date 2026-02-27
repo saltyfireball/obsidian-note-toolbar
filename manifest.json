@@ -1,0 +1,9 @@
+{
+	"id": "obsidian-note-toolbar",
+	"name": "Note Toolbar",
+	"version": "1.0.0",
+	"minAppVersion": "1.0.0",
+	"description": "Adds toolbar actions to markdown views: Today's Note, Helpers modal, and Source/Live Preview toggle.",
+	"author": "saltyfireball",
+	"isDesktopOnly": false
+}

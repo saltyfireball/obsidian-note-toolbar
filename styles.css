@@ -1,0 +1,15 @@
+/* Helpers modal */
+.sf-highlight-helpers-modal {
+	max-width: 420px;
+}
+
+.sf-helper-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 12px;
+}
+
+.sf-helper-actions button {
+	align-self: flex-start;
+}
