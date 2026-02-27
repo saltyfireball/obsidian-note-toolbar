@@ -193,7 +193,7 @@ function createSourceToggleAction(
 			mode: "source",
 			source: !isCurrentlySource,
 		};
-		view.setState(newState, { history: false } as any);
+		void view.setState(newState, { history: false });
 		if (typeof view.setEphemeralState === "function") {
 			view.setEphemeralState({ source: newState.source });
 		}

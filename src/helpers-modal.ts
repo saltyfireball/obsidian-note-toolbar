@@ -52,13 +52,13 @@ export class HelpersModal extends Modal {
 			);
 
 			// Figlet Font option - available when text is selected
-			if ((window as any).figletAPI) {
+			if (window.figletAPI) {
 				actions.createEl("button", { text: "Figlet Font (ASCII Art)" }).addEventListener(
 					"click",
 					() => {
 						this.close();
 						if (this.plugin) {
-							(window as any).figletAPI.openModal(this.app, this.plugin, this.editor);
+							window.figletAPI?.openModal(this.app, this.plugin, this.editor);
 						}
 					},
 				);
@@ -75,13 +75,13 @@ export class HelpersModal extends Modal {
 		);
 
 		// Figlet Font option - also available without selection
-		if ((window as any).figletAPI) {
+		if (window.figletAPI) {
 			actions.createEl("button", { text: "Figlet Font (ASCII Art)" }).addEventListener(
 				"click",
 				() => {
 					this.close();
 					if (this.plugin) {
-						(window as any).figletAPI.openModal(this.app, this.plugin, this.editor);
+						window.figletAPI?.openModal(this.app, this.plugin, this.editor);
 					}
 				},
 			);
