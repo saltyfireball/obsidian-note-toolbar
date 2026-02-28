@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-note-toolbar",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Toolbar actions for Obsidian: Today's Note, Helpers modal, Source/Live Preview toggle.",
 	"main": "main.js",
 	"type": "module",
