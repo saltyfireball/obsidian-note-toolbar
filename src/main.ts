@@ -10,7 +10,7 @@ export default class NoteToolbarPlugin extends Plugin implements ToolbarPlugin {
 	toolbarActionButtons = new WeakMap<MarkdownView, Record<string, unknown>>();
 	sourceModeState = false;
 
-	async onload() {
+	onload(): void {
 		ensureToolbarActions(this as unknown as ToolbarPlugin);
 		this.updateSourceModeClass();
 
