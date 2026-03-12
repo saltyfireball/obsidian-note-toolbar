@@ -68,6 +68,8 @@ export class HelpersModal extends Modal {
 					},
 				);
 			}
+
+			this.addSplitPreviewButton(actions);
 			return;
 		}
 
@@ -91,6 +93,25 @@ export class HelpersModal extends Modal {
 				},
 			);
 		}
+
+		this.addSplitPreviewButton(actions);
+	}
+
+	private addSplitPreviewButton(actions: HTMLDivElement): void {
+		if (!window.openInNewTabAPI) return;
+
+		const isActive = window.openInNewTabAPI.isSplitPreviewActive();
+		const label = isActive
+			? "Split preview: ON (click to disable)"
+			: "Split preview: OFF (click to enable)";
+
+		const btn = actions.createEl("button", { text: label });
+		if (isActive) btn.addClass("mod-cta");
+
+		btn.addEventListener("click", () => {
+			window.openInNewTabAPI?.toggleSplitPreview();
+			this.close();
+		});
 	}
 
 	onClose() {
