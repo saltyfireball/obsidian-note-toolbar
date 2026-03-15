@@ -7,7 +7,12 @@ interface OpenInNewTabAPI {
 	toggleSplitPreview(): void;
 }
 
+interface BetterSearchReplaceAPI {
+	open(app: unknown): void;
+}
+
 interface Window {
 	figletAPI?: FigletAPI;
 	openInNewTabAPI?: OpenInNewTabAPI;
+	betterSearchReplaceAPI?: BetterSearchReplaceAPI;
 }

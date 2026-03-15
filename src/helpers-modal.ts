@@ -69,6 +69,7 @@ export class HelpersModal extends Modal {
 				);
 			}
 
+			this.addSearchReplaceButton(actions);
 			this.addSplitPreviewButton(actions);
 			return;
 		}
@@ -94,7 +95,20 @@ export class HelpersModal extends Modal {
 			);
 		}
 
+		this.addSearchReplaceButton(actions);
 		this.addSplitPreviewButton(actions);
+	}
+
+	private addSearchReplaceButton(actions: HTMLDivElement): void {
+		if (!window.betterSearchReplaceAPI) return;
+
+		actions.createEl("button", { text: "Search and replace" }).addEventListener(
+			"click",
+			() => {
+				this.close();
+				window.betterSearchReplaceAPI?.open(this.app);
+			},
+		);
 	}
 
 	private addSplitPreviewButton(actions: HTMLDivElement): void {
