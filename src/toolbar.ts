@@ -41,9 +41,12 @@ function setActionAttr(action: ToolbarAction, name: string, value: string): void
 
 // Helper to detect current source mode state
 function getSourceModeState(view: MarkdownView): boolean {
-	const state = typeof view.getState === "function" ? view.getState() : {};
+	// getMode() returns "preview" for reading view, "source" for both live preview and source mode.
+	// Within "source" mode, state.source distinguishes: false = live preview, true = source mode.
 	const mode = typeof view.getMode === "function" ? view.getMode() : null;
-	return mode !== "preview" && state?.source === true;
+	if (mode === "preview") return false;
+	const state = view.getState();
+	return state?.source === true;
 }
 
 export function ensureToolbarActions(plugin: ToolbarPlugin): void {
@@ -187,20 +190,16 @@ function createSourceToggleAction(
 ): ToolbarAction {
 	const action = view.addAction(icon, title, () => {
 		const isCurrentlySource = getSourceModeState(view);
-		const currentState = typeof view.getState === "function" ? view.getState() : {};
+		const newSourceValue = !isCurrentlySource;
+		const currentState = view.getState() ?? {};
 		const newState = {
 			...currentState,
 			mode: "source",
-			source: !isCurrentlySource,
+			source: newSourceValue,
 		};
-		void view.setState(newState, { history: false });
-		if (typeof view.setEphemeralState === "function") {
-			view.setEphemeralState({ source: newState.source });
-		}
-		// Delay update to allow state to settle
-		setTimeout(() => {
+		void view.setState(newState, { history: false }).then(() => {
 			updateSourceToggleAction(plugin, view);
-		}, 100);
+		});
 	}) as ToolbarAction;
 
 	setActionAttr(action, TOOLBAR_ATTR, "source");

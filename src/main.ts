@@ -22,7 +22,6 @@ export default class NoteToolbarPlugin extends Plugin implements ToolbarPlugin {
 				layoutDebounce = setTimeout(() => {
 					layoutDebounce = null;
 					this.updateSourceModeClass();
-					this.refreshActiveMarkdownPreview();
 				}, 50);
 			}),
 		);
@@ -36,7 +35,6 @@ export default class NoteToolbarPlugin extends Plugin implements ToolbarPlugin {
 					leafDebounce = null;
 					ensureToolbarActions(this as unknown as ToolbarPlugin);
 					this.updateSourceModeClass();
-					this.refreshActiveMarkdownPreview();
 				}, 30);
 			}),
 		);
@@ -59,14 +57,5 @@ export default class NoteToolbarPlugin extends Plugin implements ToolbarPlugin {
 			document.body.classList.toggle("sf-source-mode", isSource);
 		}
 		updateSourceToggleAction(this as unknown as ToolbarPlugin, activeView);
-	}
-
-	private refreshActiveMarkdownPreview(): void {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		if (!view || !view.previewMode) return;
-		if (view.getMode && view.getMode() !== "preview") return;
-		if (typeof view.previewMode.rerender === "function") {
-			view.previewMode.rerender(true);
-		}
 	}
 }
