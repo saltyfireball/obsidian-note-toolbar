@@ -39,10 +39,24 @@ export default class NoteToolbarPlugin extends Plugin implements ToolbarPlugin {
 			}),
 		);
 
+		// Catch view state changes from other plugins (e.g. auto-view-mode)
+		// that apply state asynchronously after file-open.
+		let fileOpenDebounce: ReturnType<typeof setTimeout> | null = null;
+		this.registerEvent(
+			this.app.workspace.on("file-open", () => {
+				if (fileOpenDebounce) clearTimeout(fileOpenDebounce);
+				fileOpenDebounce = setTimeout(() => {
+					fileOpenDebounce = null;
+					this.updateSourceModeClass();
+				}, 200);
+			}),
+		);
+
 		// Cleanup on unload
 		this.register(() => {
 			if (layoutDebounce) clearTimeout(layoutDebounce);
 			if (leafDebounce) clearTimeout(leafDebounce);
+			if (fileOpenDebounce) clearTimeout(fileOpenDebounce);
 			cleanupToolbarActions(this as unknown as ToolbarPlugin);
 		});
 	}
